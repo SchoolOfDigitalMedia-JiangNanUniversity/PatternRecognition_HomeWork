@@ -34,7 +34,7 @@ class Surface(ttk.Frame):
     pic_path = ""
     viewhigh = 800
     viewwide = 800
-    update_time = 0
+    update_time = 1
     thread = None
     thread_run = False
     camera = None
