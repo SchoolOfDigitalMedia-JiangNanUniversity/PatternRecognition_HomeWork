@@ -2,7 +2,7 @@
 import cv2
 import numpy as np
 
-MAX_WIDTH = 1000
+MAX_WIDTH = 10000
 Min_Area = 2000
 SZ = 20
 PROVINCE_START = 1000

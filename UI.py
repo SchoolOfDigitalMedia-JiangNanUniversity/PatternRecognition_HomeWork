@@ -54,8 +54,6 @@ class Surface(ttk.Frame):
         ttk.Label(frame_right1, text='形状定位车牌位置：').grid(column=0, row=0, sticky=tk.W)
 
         from_pic_ctl = ttk.Button(frame_right2, text="选择图片", width=20, command=self.from_pic)
-        # from_vedio_ctl = ttk.Button(frame_right2, text="来自摄像头", width=20, command=self.from_vedio)
-        # from_img_pre = ttk.Button(frame_right2, text="查看形状预处理图像", width=20, command=self.show_img_pre)
         self.image_ctl = ttk.Label(frame_left)
         self.image_ctl.pack(anchor="nw")
 
@@ -66,9 +64,7 @@ class Surface(ttk.Frame):
         self.r_ctl.grid(column=0, row=3, sticky=tk.W)
         self.color_ctl = ttk.Label(frame_right1, text="", width="20")
         self.color_ctl.grid(column=0, row=4, sticky=tk.W)
-        #from_vedio_ctl.pack(anchor="se", pady="5")
         from_pic_ctl.pack(anchor="se", pady="5")
-        #from_img_pre.pack(anchor="se", pady="5")
 
         ttk.Label(frame_right1, text='颜色定位车牌位置：').grid(column=0, row=5, sticky=tk.W)
         self.roi_ct2 = ttk.Label(frame_right1)
@@ -143,24 +139,9 @@ class Surface(ttk.Frame):
         if filename.any():
             debug.img_show(filename)
 
-    #摄像头功能未实现
-    def from_vedio(self):
-        if self.thread_run:
-            return
-        if self.camera is None:
-            self.camera = cv2.VideoCapture(0)
-            if not self.camera.isOpened():
-                mBox.showwarning('警告', '摄像头打开失败！')
-                self.camera = None
-                return
-        self.thread = threading.Thread(target=self.vedio_thread, args=(self,))
-        self.thread.setDaemon(True)
-        self.thread.start()
-        self.thread_run = True
-
     def from_pic(self):
         self.thread_run = False
-        self.pic_path = askopenfilename(title="选择识别图片", filetypes=[("jpg图片", "*.jpg"), ("png图片", "*.png")])
+        self.pic_path = askopenfilename(title="选择图片", filetypes=[("jpg图片", "*.jpg"), ("png图片", "*.png")])
         if self.pic_path:
             img_bgr = img_math.img_read(self.pic_path)
             first_img, oldimg = self.predictor.img_first_pre(img_bgr)
@@ -194,7 +175,7 @@ class Surface(ttk.Frame):
 
 
 def close_window():
-    print("destroy")
+    print("----程序关闭----")
     if surface.thread_run:
         surface.thread_run = False
         surface.thread.join(2.0)
@@ -202,6 +183,8 @@ def close_window():
 
 
 if __name__ == '__main__':
+    print("----江南大学 模式识别课程----")
+    print("----     程序开始运行   ----")
     win = tk.Tk()
 
     surface = Surface(win)
